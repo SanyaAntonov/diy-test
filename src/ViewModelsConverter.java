@@ -42,8 +42,8 @@ public class ViewModelsConverter {
                 }
                 case TECHNOLOGY -> {
                     if (rootModelTo == null) throw new IllegalArgumentException();
+                    if (techModelTo != null) rootModelTo.techList.add(techModelTo);
                     techModelTo = new TechModelTo(rowModel.anyCode);
-                    rootModelTo.techList.add(techModelTo);
                 }
                 case MATERIAL -> {
                     if (techModelTo == null) throw new IllegalArgumentException();
