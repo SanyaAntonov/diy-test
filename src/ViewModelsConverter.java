@@ -30,7 +30,26 @@ public class ViewModelsConverter {
     public static List<RootModelTo> toRootModels(List<RowModel> source) {
         List<RootModelTo> roots = new ArrayList<>();
         if (source.isEmpty()) {
-            // TODO - реализовать
+            return roots;
+        }
+        RootModelTo rootModelTo = null;
+        TechModelTo techModelTo = null;
+        for (RowModel rowModel : source) {
+            switch (rowModel.positionType) {
+                case ROOT -> {
+                    if (rootModelTo != null) roots.add(rootModelTo);
+                    rootModelTo = new RootModelTo(rowModel.anyCode);
+                }
+                case TECHNOLOGY -> {
+                    if (rootModelTo == null) throw new IllegalArgumentException();
+                    techModelTo = new TechModelTo(rowModel.anyCode);
+                    rootModelTo.techList.add(techModelTo);
+                }
+                case MATERIAL -> {
+                    if (techModelTo == null) throw new IllegalArgumentException();
+                    techModelTo.rowTos.add(new MaterialTo(rowModel.anyCode));
+                }
+            }
         }
         return roots;
     }
